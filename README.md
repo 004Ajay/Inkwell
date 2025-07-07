@@ -1,83 +1,93 @@
 # Inkwell
 
-Inkwell is a personalized AI writing assistant that learns your unique writing style from a collection of your documents. Instead of generic responses, it crafts new content—from technical articles to creative stories—that mirrors your own voice and narrative techniques. It runs entirely on your local machine, ensuring privacy and control.
+Inkwell is a **personalized AI writing assistant** that mimics the unique writing style from a collection of documents uploaded. Instead of generic responses, it makes new content—from technical articles to creative stories. It runs entirely on the local machine, ensuring privacy and control.
 
 ---
 
 ## How It Works
 
-The system uses a "Style-Augmented Generation" approach. It avoids the resource-intensive process of fine-tuning by retrieving stylistic examples from your work and feeding them to a local Large Language Model (LLM) as a guide.
+The system uses a **Style-Augmented Generation** approach. _It avoids the resource-intensive process of fine-tuning by retrieving stylistic examples from the uploaded documents_ and feeding them to a local Large Language Model (LLM) as a guide.
 
+**Project Flowchart**
 ![Project Flowchart](img/flowchart.png)
 
-### Components
+<details>
+<summary><b>Components</b></summary>
 
 1.  **Knowledge Core (`ingest.py`)**
-    *   **Blog Ingestion**: Scans the `blogs` directory for your `story.md` files.
-    *   **Intelligent Chunking**: Uses the `Unstructured.io` library to parse and split your documents into context-aware chunks, preserving the original narrative structure.
-    *   **Vectorization**: Each chunk is converted into a numerical embedding using `sentence-transformers` and stored in a local `ChromaDB` vector database. This forms the permanent, searchable knowledge base of your writing style.
+    *   **Blog Ingestion**: Scans the `blogs` directory for `story.md` files.
+    *   **Intelligent Chunking**: Uses the `Unstructured.io` library to parse and split the documents into context-aware chunks, preserving the original narrative structure.
+    *   **Vectorization**: Each chunk is converted into a numerical embedding using `sentence-transformers` and stored in a local `ChromaDB` vector database. This forms the permanent, searchable knowledge base of the writing style.
 
 2.  **Creative Engine (`main.py`)**
-    *   **Retriever**: When you provide a prompt, the system searches the ChromaDB database to find the most relevant stylistic examples from your work.
-    *   **Style-Aware Prompting**: It constructs a detailed prompt for the LLM, combining your request with the retrieved stylistic examples and specific instructions (e.g., creative vs. technical).
-    *   **Local LLM Integration**: Uses `Ollama` to run a powerful, compact LLM (like Qwen2 or Gemma2) on your local machine to generate the final text.
+    *   **Retriever**: When you provide a prompt, the system searches the ChromaDB database to find the most relevant stylistic examples from our work.
+    *   **Style-Aware Prompting**: It constructs a detailed prompt for the LLM, combining our request with the retrieved stylistic examples and specific instructions (e.g., creative vs. technical).
+    *   **Local LLM Integration**: Uses `Ollama` to run a powerful, compact LLM (like Qwen3 or Gemma3) on our local machine to generate the final text.
 
-3.  **CLI & Playground**
+3.  **Interface**
     *   **Command-Line Interface**: The primary way to interact with the assistant. It includes flags to specify the model, writing style, and output format.
-    *   **Jupyter Notebook (`playground.ipynb`)**: An interactive environment to explore the system's inner workings, view retrieved contexts, and experiment with the generation process.
+
+</details>
+---
+
+## Current Features
+
+* **Command-Line Interface (CLI)**: Basic interaction with the RAG pipeline.
+
+* **Style-Augmented Generation**: Retrieves style-matched context to guide the generation output.
+
+* **Context Chunking**: Handles user-provided documents for efficient semantic search.
+
+* **RAG Pipeline**: Uses LangChain for modular retrieval and prompt engineering.
 
 ---
 
-## Examples
-
-**CLI in Action**
+## CLI in Action
 
 Here is a sample of the tool generating a technical article from a simple prompt.
 
-![Sample Output](img/sample_output.png)
-
-**Exploring with the Playground**
-
-The notebook provides a transparent view into the retrieval and prompt construction process.
-
-![Jupyter Notebook](img/playground.png)
+![Sample Output](img/qwen_in_CLI.png)
 
 ---
 
 ## Getting Started
 
-1.  **Setup**: Create a Python virtual environment and install the dependencies:
-    ```bash
-    python -m venv story
-    .\story\Scripts\activate
-    pip install -r requirements.txt
-    ```
+1.  **Setup**: Create a Python virtual environment and install the dependencies (`pip install -r requirements.txt`)
 
-2.  **Add Your Content**: Place your writings (as `story.md` files) into subdirectories within the `blogs` folder.
+2.  **Add the Contents**: Place the writings (as `story.md` files) into subdirectories within the `blogs` folder.
 
-3.  **Build the Knowledge Base**: Run the ingestion script once to process your documents.
-    ```bash
-    python ingest.py
-    ```
+3.  **Build the Knowledge Base**: Run the ingestion script (`ingest.py`) once to process the documents.
+    
+4.  **Run the Assistant**: Use the CLI to generate text. Make sure local Ollama server is running.
 
-4.  **Run the Assistant**: Use the CLI to generate text. Make sure your local Ollama server is running.
-    ```bash
-    # See all options
-    python main.py -h
-
-    # Example: Write a creative story using a specific model
-    python main.py "A story about a clockmaker who can control time" --style creative --model gemma2:9b-instruct-q4_K_M
-    ```
+        # Example: Write a creative story using a specific model
+        
+        python main.py -p "A story about git and github" --style creative --model gemma3:4b
 
 ---
 
-<details>
-<summary><b>Future Roadmap</b></summary>
+## Future Roadmap / TO-DO
 
-- **Web Interface**: Develop a simple web UI (using Flask or FastAPI) for a more user-friendly experience.
-- **Advanced Style Control**: Implement more granular style controls, such as specifying the tone (e.g., humorous, formal) or targeting specific sub-collections of documents.
-- **Real-time Ingestion**: Add a feature to watch the `blogs` directory for changes and automatically update the vector store.
-- **Interactive Editing**: Create a mode where the AI suggests completions or rephrasing for a piece of text you are actively writing.
-- **Model Evaluation**: Build a small suite to compare the output quality of different local LLMs for your specific writing style.
+* Add a Streamlit/Django GUI and make it accessible via a simple web interface.
 
-</details>
+* Implement a rich output viewer - retrived context & generated content in separate panes
+
+* Explore using MindsDB or similar AI-native databases
+    
+    * Highlight Imbalances and Style gap addressing (show the underrepresented categories/topics)
+
+    * Auto-tagging (adding missing metadata) using a trained ML model.
+
+* Separate the project into Backend and Frontend
+    
+    * Backend accessible via FastAPI
+
+    * Frontend in Modern JavaScript Frameworks or Python based GUI makers
+
+    * Make both ends into microservices and deploy it as docker containers (to make it production ready)
+
+**_Experimental TO-DOs_**
+
+Experiment with voice/audio input using whisper-based transcription to capture creative prompts hands-free.
+
+Prototype a collaborative agent workflow where one agent focuses on content, another on style, and another on polish.
