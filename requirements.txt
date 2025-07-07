@@ -1,0 +1,10 @@
+langchain
+langchain-community
+langchain-chroma
+unstructured[md]
+sentence-transformers
+ollama
+chromadb
+pywin32
+langchain-huggingface
+langchain-ollama
