@@ -1,4 +1,7 @@
-
+# This file is part of Inkwell.
+# Copyright (C) 2025  Ajay (GitHub Username: 004Ajay)
+# Licensed under the GNU General Public License v3.0 or later.
+# See the LICENSE file for more details.
 
 import argparse
 from langchain_chroma import Chroma
