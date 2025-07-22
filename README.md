@@ -91,3 +91,7 @@ Here is a sample of the tool generating a technical article from a simple prompt
 Experiment with voice/audio input using whisper-based transcription to capture creative prompts hands-free.
 
 Prototype a collaborative agent workflow where one agent focuses on content, another on style, and another on polish.
+
+## License
+
+This project is licensed under the GNU General Public License v3.0 - see the [LICENSE](./LICENSE) file for details.
