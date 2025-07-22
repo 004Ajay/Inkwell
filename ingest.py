@@ -1,3 +1,8 @@
+# This file is part of Inkwell.
+# Copyright (C) 2025  Ajay (GitHub Username: 004Ajay)
+# Licensed under the GNU General Public License v3.0 or later.
+# See the LICENSE file for more details.
+
 import os
 from langchain_community.document_loaders import UnstructuredMarkdownLoader
 from langchain_text_splitters import RecursiveCharacterTextSplitter
